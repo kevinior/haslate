@@ -1,0 +1,1 @@
+"""Home Assistant interface module."""

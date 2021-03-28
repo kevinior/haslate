@@ -1,0 +1,84 @@
+# Configuration file for HAslate
+#
+# This is just a template, you will need to fill in the configuration
+# for your system.
+
+# System configuration
+system:
+  # If you have multiple devices it's a good idea to give them different
+  # names.
+  hostname: $$HOSTNAME$$
+  # Wireless network configuration
+  # Detected access points:
+  # $$ACCESS_POINTS$$
+  wifi:
+    ssid: $$WIFI_SSID$$
+    password: WIFI_PASSWORD
+  # Timezone: a timezone database name, "Europe/Stockholm" for example.
+  timezone: "UTC"
+
+# Application configuration
+application:
+  homeassistant_uri: "ws://host:8123/api/websocket"
+  homeassistant_token: "TOKEN"
+  # How many widget cells across and down should there be on each page?
+  grid: [12, 8]
+  # Definitions for each page
+  pages:
+    # An example page with various different widgets.
+    - name: Main
+      items:
+        - at: [7, 1]
+          size: [6, 1]
+          type: datetime
+          # If you include a linebreak in a datetime's format the first part is
+          # drawn as the label and the second as the value.
+          format: "%A w%V\n%Y-%m-%d"
+          widget:
+            # value_size and label_size are in points.
+            value_size: 14
+        - at: [7, 2]
+          size: [3, 1]
+          type: datetime
+          format: "%H:%M"
+          widget:
+            value_size: 16
+        - at: [10, 2]
+          type: battery
+          format: icon
+        - at: [11, 2]
+          type: battery
+          format: percent
+          widget:
+            value_size: 12
+        - at: [12, 2]
+          type: wifi
+          format: icon
+        - at: [1, 3]
+          size: [2, 2]
+          type: hass_switch
+          data:
+            entity: light.kitchen_light
+          widget:
+            label: Kitchen
+        - at: [3, 3]
+          size: [2, 2]
+          type: hass_light
+          data:
+            entity: light.kitchen_light
+          widget:
+            label: Kitchen
+        - at: [5, 3]
+          size: [2, 2]
+          type: hass_sensor
+          format: "{v:0.1f} {u}"
+          data:
+            entity: sensor.outside_temperature
+          widget:
+            label: Outside
+            value_size: 16
+        - at: [12, 8]
+          type: action
+          widget:
+            icon: close-box
+            action: quit
