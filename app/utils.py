@@ -56,17 +56,11 @@ async def unmount_data_partition() -> bool:
 class WifiAp:
     inuse: typing.Union[bool, str]
     ssid: str
-    mode: str
-    chan: str
-    rate: str
-    signal: str
-    bars: str
-    security: str
 
 
 async def get_wifi_aps() -> typing.List[WifiAp]:
     proc = await asyncio.create_subprocess_exec(
-        '/usr/bin/nmcli', '--terse', 'device', 'wifi', 'list',
+        '/usr/bin/nmcli', '--terse', '--fields=IN-USE,SSID', 'device', 'wifi', 'list',
         stdout = asyncio.subprocess.PIPE
     )
     (stdout, _) = await proc.communicate()
