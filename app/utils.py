@@ -102,6 +102,16 @@ async def update_wifi(wifi_config):
     await proc.communicate()
     if proc.returncode != 0:
         print(f'nmcli (update wifi) failed with {proc.returncode}')
+    # Something in the stack doesn't really support WPA3, so we can
+    # force WPA2.
+    if (wifi_config.force_wpa2.value):
+        proc = await asyncio.create_subprocess_exec(
+            '/usr/bin/nmcli', '--terse', 'connection', 'modify',
+            wifi_config.ssid.value, 'wifi-sec.key-mgmt', 'wpa-psk'
+        )
+        await proc.communicate()
+        if proc.returncode != 0:
+            print(f'nmcli (configure wifi) failed with {proc.returncode}')
 
 async def update_timezone(new_timezone: str) -> None:
     if not is_on_device:

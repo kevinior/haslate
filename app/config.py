@@ -57,6 +57,19 @@ class ConfigItem:
         raise NotImplementedError
 
 
+class BoolValue(ConfigItem):
+    """A single boolean value in the configuration."""
+    def __init__(self, parent: ConfigSection, name: str, value: bool) -> None:
+        super().__init__(parent, name)
+        self.value = value
+
+    @classmethod
+    def from_data(cls: Type[T], parent: ConfigSection, name: str, data: typing.Dict) -> T:
+        if data and not isinstance(data, bool):
+            raise TypeError(f'Not a bool: {data} @{cls.get_path(parent, name)}')
+        return cls(parent, name, data)
+
+
 class StringValue(ConfigItem):
     """A single string value in the configuration."""
     def __init__(self, parent: ConfigSection, name: str, value: str) -> None:
@@ -163,7 +176,11 @@ class ArraySection(ConfigItem):
 class WifiConfigSection(ConfigSection):
     KEYS = {
         'ssid': StringValue,
-        'password': StringValue
+        'password': StringValue,
+        'force_wpa2': BoolValue
+    }
+    DEFAULTS = {
+        'force_wpa2': False
     }
 
 
