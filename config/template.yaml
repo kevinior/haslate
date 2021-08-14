@@ -14,6 +14,9 @@ system:
   wifi:
     ssid: $$WIFI_SSID$$
     password: WIFI_PASSWORD
+    # Something in the stack doesn't work properly with WPA3, so
+    # default to forcing WPA2
+    force_wpa2: true
   # Timezone: a timezone database name, "Europe/Stockholm" for example.
   timezone: "UTC"
 
